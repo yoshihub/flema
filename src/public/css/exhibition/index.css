@@ -1,0 +1,43 @@
+.link-group{
+    margin-top: 30px;
+    margin-left:60px;
+}
+
+
+.index-link{
+    text-decoration: none;
+    color: #5F5F5F;
+    font-weight: bold;
+}
+
+.mylist-link{
+    margin-left: 30px;
+    text-decoration: none;
+    color: #5F5F5F;
+    font-weight: bold;
+}
+
+.hr-line{
+    height: 2px;
+    background-color: #C3C3C3;
+    border: none;
+    margin:0;
+    margin-bottom:30px;
+}
+
+.card-list{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin:15px;
+}
+
+.card img{
+    width: 150px;
+    height: 150px;
+}
+
+.card-list p{
+    font-size:12px;
+    margin:0;
+}
