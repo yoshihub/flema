@@ -1,0 +1,37 @@
+.profile-group {
+    display: flex;
+    align-items: center;
+    margin: 25px auto;
+    max-width: 600px;
+}
+
+.image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 30px;
+}
+
+.user-info p {
+    margin: 0;
+    font-weight: bold;
+    font-size:24px;
+}
+
+.edit-button {
+    margin-left: auto;
+    padding: 4px 10px;
+    background-color: white;
+    color: #EE5252;
+    border: 2px solid #EE5252;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.edit-button:hover {
+    background-color: #EE5252;
+    color: white;
+}

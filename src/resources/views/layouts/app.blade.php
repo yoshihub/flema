@@ -21,8 +21,11 @@
                 <input type="text" placeholder="なにをお探しですか？">
             </form>
             <nav class="nav-links">
-                <a href="#">ログアウト</a>
-                <a href="#">マイページ</a>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit">ログアウト</button>
+                </form>
+                <a href="/mypage">マイページ</a>
                 <button class="sell-button">出品</button>
             </nav>
             @endif

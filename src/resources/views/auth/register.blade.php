@@ -30,7 +30,7 @@
             @enderror
         </div>
         <div class="form-group">
-            <label for="password_confirmation">確認用パスワード</label><input type=" password" name="password_confirmation" />
+            <label for="password_confirmation">確認用パスワード</label><input type="password" name="password_confirmation" />
         </div>
         <div class="form-group">
             <button type="submit">
