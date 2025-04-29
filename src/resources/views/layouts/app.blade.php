@@ -23,7 +23,7 @@
             <nav class="nav-links">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit">ログアウト</button>
+                    <button type="submit" class="logout-button">ログアウト</button>
                 </form>
                 <a href="/mypage">マイページ</a>
                 <button class="sell-button">出品</button>

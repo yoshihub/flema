@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="profile-group">
-    @if ($user->profile_image)
+    @if (Auth::user()->profile_image)
     <img src="{{ asset('storage/profile_images/' . $user->profile_image) }}" alt="プロフィール画像" class="image">
     @else
     <img src="{{ asset('images/default-icon.png') }}" alt="デフォルト画像" class="image">
