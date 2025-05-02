@@ -16,16 +16,16 @@ class CreateExhibitionsTable extends Migration
         Schema::create('exhibitions', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('image');
+            $table->string('exhibition_image');
             $table->string('brand')->nullable();
             $table->text('explanation');
             $table->integer('price');
-            // $table->unsignedBigInteger('category_id');
-            // $table->unsignedBigInteger('condition_id');
+            $table->unsignedBigInteger('condition_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
-            // $table->foreign('condition_id')->references('id')->on('conditions')->onDelete('cascade');
-            // $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('condition_id')->references('id')->on('conditions')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

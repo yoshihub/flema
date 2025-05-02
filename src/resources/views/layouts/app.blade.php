@@ -25,8 +25,8 @@
                     @csrf
                     <button type="submit" class="logout-button">ログアウト</button>
                 </form>
-                <a href="/mypage">マイページ</a>
-                <button class="sell-button">出品</button>
+                <a href="/mypage" class="mypage-link">マイページ</a>
+                <a href="/sell" class="sell-button">出品</a>
             </nav>
             @endif
         </div>

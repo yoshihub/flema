@@ -36,7 +36,6 @@
 }
 
 .nav-links a {
-    color: white;
     text-decoration: none;
     font-size: 14px;
 }
@@ -49,6 +48,10 @@
     border-radius: 4px;
     font-weight: bold;
     cursor: pointer;
+}
+
+.mypage-link{
+    color:white;
 }
 
 .logout-button {
