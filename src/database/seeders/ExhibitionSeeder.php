@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class ExhibitionSeeder extends Seeder
 {
@@ -14,88 +16,102 @@ class ExhibitionSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('exhibitions')->insert([
+        $files = [
             [
                 'name' => '腕時計',
+                'image' => 'Clock.jpg',
                 'price' => 15000,
                 'explanation' => 'スタイリッシュなデザインのメンズ腕時計',
-                'exhibition_image' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Armani+Mens+Clock.jpg',
-                'condition_id' => 1,
-                'user_id' => 1,
+                'condition' => 1,
             ],
             [
                 'name' => 'HDD',
+                'image' => 'HardDisk.jpg',
                 'price' => 5000,
                 'explanation' => '高速で信頼性の高いハードディスク',
-                'exhibition_image' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/HDD+Hard+Disk.jpg',
-                'condition_id' => 2,
-                'user_id' => 1,
+                'condition' => 2,
             ],
             [
                 'name' => '玉ねぎ3束',
+                'image' => 'Vegetable.jpg',
                 'price' => 300,
                 'explanation' => '新鮮な玉ねぎ3束のセット',
-                'exhibition_image' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/iLoveIMG+d.jpg',
-                'condition_id' => 3,
-                'user_id' => 1,
+                'condition' => 3,
             ],
             [
                 'name' => '革靴',
+                'image' => 'LeatherShoes.jpg',
                 'price' => 4000,
                 'explanation' => 'クラシックなデザインの革靴',
-                'exhibition_image' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Leather+Shoes+Product+Photo.jpg',
-                'condition_id' => 4,
-                'user_id' => 1,
+                'condition' => 4,
             ],
             [
                 'name' => 'ノートPC',
+                'image' => 'NotePC.jpg',
                 'price' => 45000,
                 'explanation' => '高性能なノートパソコン',
-                'exhibition_image' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Living+Room+Laptop.jpg',
-                'condition_id' => 1,
-                'user_id' => 1,
+                'condition' => 1,
             ],
             [
                 'name' => 'マイク',
+                'image' => 'MusicMic.jpg',
                 'price' => 8000,
                 'explanation' => '高音質のレコーディング用マイク',
-                'exhibition_image' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Music+Mic+4632231.jpg',
-                'condition_id' => 2,
-                'user_id' => 1,
+                'condition' => 2,
             ],
             [
                 'name' => 'ショルダーバッグ',
+                'image' => 'RedBag.jpg',
                 'price' => 3500,
                 'explanation' => 'おしゃれなショルダーバッグ',
-                'exhibition_image' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Purse+fashion+pocket.jpg',
-                'condition_id' => 3,
-                'user_id' => 2,
+                'condition' => 3,
             ],
             [
                 'name' => 'タンブラー',
+                'image' => 'Tumbler.jpg',
                 'price' => 500,
                 'explanation' => '使いやすいタンブラー',
-                'exhibition_image' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Tumbler+souvenir.jpg',
-                'condition_id' => 4,
-                'user_id' => 2,
+                'condition' => 4,
             ],
             [
                 'name' => 'コーヒーミル',
+                'image' => 'Coffee.jpg',
                 'price' => 4000,
                 'explanation' => '手動のコーヒーミル',
-                'exhibition_image' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Waitress+with+Coffee+Grinder.jpg',
-                'condition_id' => 1,
-                'user_id' => 2,
+                'condition' => 1,
             ],
             [
                 'name' => 'メイクセット',
+                'image' => 'Cosme.jpg',
                 'price' => 2500,
                 'explanation' => '便利なメイクアップセット',
-                'exhibition_image' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/外出メイクアップセット.jpg',
-                'condition_id' => 2,
-                'user_id' => 3,
+                'condition' => 2,
             ],
-        ]);
+        ];
+
+        foreach ($files as $file) {
+            // 元画像のパス（public/sample_images/時計.jpg）
+            $sourcePath = public_path('sample_images/' . $file['image']);
+
+            // 保存先のファイル名をユニークにする
+            $filename = time() . '_' . Str::random(5) . '_' . $file['image'];
+
+            // storage/app/public/exhibition_images にコピー
+            Storage::disk('public')->put('exhibition_images/' . $filename, file_get_contents($sourcePath));
+
+            // exhibitions テーブルに保存
+            DB::table('exhibitions')->insert([
+                'name' => $file['name'],
+                'price' => $file['price'],
+                'explanation' => $file['explanation'],
+                'exhibition_image' => $filename,
+                'condition_id' => $file['condition'],
+                'user_id' => 1,
+            ]);
+
+            // 遅延させてファイル名が重複しないようにする
+            usleep(200000); // 0.2秒
+        }
 
         DB::table('category_exhibition')->insert([
             [
