@@ -18,4 +18,9 @@ class Exhibition extends Model
     {
         return $this->belongsTo(Condition::class);
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'exhibition_user');
+    }
 }

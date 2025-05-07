@@ -47,3 +47,45 @@ textarea {
     font-size: 16px;
     cursor: pointer;
 }
+.detail-text{
+    margin-bottom:0;
+    font-size:18px;
+}
+
+hr{
+    margin-top:0;
+    margin-bottom:10px;
+    height:2px;
+    border:none;
+    background-color: #C3C3C3;
+}
+
+.category-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.category-checkbox {
+    display: none;
+}
+
+.category-label {
+    padding: 5px 12px;
+    border: 1px solid #EE5252;
+    border-radius: 20px;
+    background-color: white;
+    color: #EE5252;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.category-checkbox:checked+.category-label {
+    background-color: #EE5252;
+    color: white;
+}
+
+.error-message {
+    color: #ff0000;
+}

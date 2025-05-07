@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ExhibitionRequest;
 use App\Models\Category;
 use App\Models\Condition;
 use App\Models\Exhibition;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class SellController extends Controller
@@ -18,7 +18,7 @@ class SellController extends Controller
         return view('sell.index', compact('categories', 'conditions'));
     }
 
-    public function store(Request $request)
+    public function store(ExhibitionRequest $request)
     {
         $user = Auth::user();
         $exhibition = new Exhibition();

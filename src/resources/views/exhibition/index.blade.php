@@ -13,12 +13,14 @@
 <div class="card-list">
     @foreach($exhibitions as $exhibition)
     <div class="card">
-        @if ($exhibition->exhibition_image)
-        <img src="{{ asset('storage/exhibition_images/' . $exhibition->exhibition_image) }}" alt="商品画像">
-        @else
-        <img src="{{ asset('images/default-icon.png') }}" alt="デフォルト画像">
-        @endif
-        <p>{{$exhibition->name}}</p>
+        <a href="{{ route('exhibition.show', $exhibition->id) }}" class="card-link">
+            @if ($exhibition->exhibition_image)
+            <img src="{{ asset('storage/exhibition_images/' . $exhibition->exhibition_image) }}" alt="商品画像">
+            @else
+            <img src="{{ asset('images/default-icon.png') }}" alt="デフォルト画像">
+            @endif
+            <p class="product-name">{{$exhibition->name}}</p>
+        </a>
     </div>
     @endforeach
 </div>

@@ -1,0 +1,122 @@
+@extends('layouts.app')
+
+@section('css')
+<link rel="stylesheet" href="{{ asset('css/exhibition/show.css') }}">
+@endsection
+
+@section('content')
+<div class="product-detail">
+    <div class="product-main">
+        <div class="product-image">
+            @if($exhibition->exhibition_image)
+            <img src="{{ asset('storage/exhibition_images/' . $exhibition->exhibition_image) }}" alt="{{ $exhibition->name }}">
+            @else
+            <div class="no-image">商品画像</div>
+            @endif
+        </div>
+
+        <div class="product-info">
+            <h1 class="product-name">{{ $exhibition->name }}</h1>
+            @if($exhibition->brand)<p class="product-brand">{{ $exhibition->brand }}</p>@endif
+
+            <p class="product-price">¥{{ number_format($exhibition->price) }}<span class="tax">(税込)</span></p>
+            <div class="action-buttons">
+                @if(Auth::check())
+                @if(Auth::user()->exhibitions->contains($exhibition->id))
+                <form action="{{ route('unfavorite', $exhibition->id) }}" method="POST">
+                    @csrf
+                    <div class="action-item">
+                        <button type="submit" class="circle-btn" aria-label="お気に入り解除">
+                            <i class="fa-solid fa-star" style="color: #FFD700;"></i>
+                        </button>
+                        <span class="action-count">{{ $exhibition->users->count() }}</span>
+                    </div>
+                </form>
+                @else
+                <form action="{{ route('favorite', $exhibition->id) }}" method="POST">
+                    @csrf
+                    <div class="action-item">
+                        <button type="submit" class="circle-btn" aria-label="お気に入り登録">
+                            <i class="fa-regular fa-star"></i>
+                        </button>
+                        <span class="action-count">{{ $exhibition->users->count() }}</span>
+                    </div>
+                </form>
+                @endif
+                @endif
+                <div class="action-item">
+                    <button class="circle-btn" aria-label="コメント">
+                        <i class="fa-regular fa-comment"></i>
+                    </button>
+                    <span class="action-count">1</span>
+                </div>
+            </div>
+
+            <a href="#" class="purchase-btn">購入手続きへ</a>
+
+            <div class="product-description">
+                <h2>商品説明</h2>
+                <div class="description-content">
+                    <p>{{ $exhibition->explanation }}</p>
+                </div>
+            </div>
+
+            <div class="product-details">
+                <h2>商品の情報</h2>
+                <div class="details-table">
+                    <div class="detail-row">
+                        <div class="detail-label">カテゴリー</div>
+                        <div class="detail-value">
+                            @foreach($exhibition->categories as $category)
+                            <span class="category-tag">{{ $category->content }}</span>
+                            @endforeach
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">商品の状態</div>
+                        <div class="detail-value">{{ $exhibition->condition->content }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="comment-section">
+        <h2>コメント(0)</h2>
+        <div class="comment-input-guide">
+            このコメント入力できます。
+        </div>
+        <div class="comment-box">
+            <textarea placeholder="商品へのコメント" class="comment-input"></textarea>
+            <button type="submit" class="comment-submit">コメントを送信する</button>
+        </div>
+    </div>
+</div>
+@endsection
+
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const favoriteBtn = document.querySelector('.favorite-btn');
+        if (favoriteBtn) {
+            favoriteBtn.addEventListener('click', function() {
+                const id = this.dataset.id;
+                fetch(`/exhibition/${id}/favorite`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            const star = this.querySelector('i');
+                            star.classList.toggle('active');
+                        }
+                    });
+            });
+        }
+    });
+</script>
+@endsection

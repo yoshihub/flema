@@ -46,4 +46,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserAddress::class);
     }
+
+    public function exhibitions()
+    {
+        return $this->belongsToMany(Exhibition::class, 'exhibition_user');
+    }
 }

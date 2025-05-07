@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Exhibition;
+use App\Models\Category;
+use App\Models\Condition;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class ExhibitionController extends Controller
 {
@@ -18,5 +22,12 @@ class ExhibitionController extends Controller
         }
 
         return view('exhibition.index', compact('exhibitions'));
+    }
+
+    public function show($id)
+    {
+        $exhibition = Exhibition::with(['categories', 'condition'])->findOrFail($id);
+
+        return view('exhibition.show', compact('exhibition'));
     }
 }
