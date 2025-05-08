@@ -6,8 +6,8 @@
 
 @section('content')
 <div class="link-group">
-    <a href="/" class="index-link">おすすめ</a>
-    <a href="#" class="mylist-link">マイリスト</a>
+    <a href="/" class="index-link {{ request('page') !== 'mylist' ? 'active' : '' }}">おすすめ</a>
+    <a href="/?page=mylist" class="mylist-link {{ request('page') === 'mylist' ? 'active' : '' }}">マイリスト</a>
 </div>
 <hr class="hr-line">
 <div class="card-list">

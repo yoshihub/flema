@@ -48,11 +48,13 @@
                     <button class="circle-btn" aria-label="コメント">
                         <i class="fa-regular fa-comment"></i>
                     </button>
-                    <span class="action-count">1</span>
+                    <span class="action-count">{{ $exhibition->comments->count() }}</span>
                 </div>
             </div>
 
+            @if(Auth::check())
             <a href="#" class="purchase-btn">購入手続きへ</a>
+            @endif
 
             <div class="product-description">
                 <h2>商品説明</h2>
@@ -82,41 +84,30 @@
     </div>
 
     <div class="comment-section">
-        <h2>コメント(0)</h2>
-        <div class="comment-input-guide">
-            このコメント入力できます。
+        <h2>コメント({{ $exhibition->comments->count() }})</h2>
+        @foreach($exhibition->comments as $comment)
+        <div>
+            <p>
+                @if (Auth::user()->profile_image)
+                <img src="{{ asset('storage/profile_images/' . Auth::user()->profile_image) }}" alt="プロフィール画像" class="image">
+                @else
+                <img src="{{ asset('images/default-icon.png') }}" alt="デフォルト画像" class="image">
+                @endif
+                {{ $comment->user->name }}
+            </p>
+            <p>{{ $comment->content }}</p>
         </div>
-        <div class="comment-box">
-            <textarea placeholder="商品へのコメント" class="comment-input"></textarea>
+        @endforeach
+        @if(Auth::check())
+        <form class="comment-box" method="POST" action="{{ route('comments.store', ['id' => $exhibition->id]) }}">
+            @csrf
+            @error('content')
+            <p class="error-message">{{ $message }}</p>
+            @enderror
+            <textarea name="content" placeholder="商品へのコメント" class="comment-input"></textarea>
             <button type="submit" class="comment-submit">コメントを送信する</button>
-        </div>
+        </form>
+        @endif
     </div>
 </div>
-@endsection
-
-@section('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const favoriteBtn = document.querySelector('.favorite-btn');
-        if (favoriteBtn) {
-            favoriteBtn.addEventListener('click', function() {
-                const id = this.dataset.id;
-                fetch(`/exhibition/${id}/favorite`, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                            'Accept': 'application/json'
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            const star = this.querySelector('i');
-                            star.classList.toggle('active');
-                        }
-                    });
-            });
-        }
-    });
-</script>
 @endsection

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommentRequest;
 use Illuminate\Http\Request;
 use App\Models\Exhibition;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Condition;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -16,9 +18,13 @@ class ExhibitionController extends Controller
         $page = $request->query('page');
 
         if ($page === 'mylist') {
-            $exhibitions = Exhibition::where('is_favorite', true)->get();
+            if (Auth::check()) {
+                $exhibitions = Auth::user()->exhibitions;
+            } else {
+                $exhibitions = collect();
+            }
         } else {
-            $exhibitions = Exhibition::all();
+            $exhibitions = Exhibition::where('user_id', '!=', Auth::id())->get();
         }
 
         return view('exhibition.index', compact('exhibitions'));
@@ -29,5 +35,16 @@ class ExhibitionController extends Controller
         $exhibition = Exhibition::with(['categories', 'condition'])->findOrFail($id);
 
         return view('exhibition.show', compact('exhibition'));
+    }
+
+    public function comment(CommentRequest $request, $id)
+    {
+        Comment::create([
+            'content' => $request->content,
+            'user_id' => Auth::id(),
+            'exhibition_id' => $id,
+        ]);
+
+        return back();
     }
 }

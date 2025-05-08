@@ -23,4 +23,9 @@ class Exhibition extends Model
     {
         return $this->belongsToMany(User::class, 'exhibition_user');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
