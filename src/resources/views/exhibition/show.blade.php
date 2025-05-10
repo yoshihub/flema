@@ -21,7 +21,9 @@
 
             <p class="product-price">¥{{ number_format($exhibition->price) }}<span class="tax">(税込)</span></p>
             <div class="action-buttons">
+
                 @if(Auth::check())
+
                 @if(Auth::user()->exhibitions->contains($exhibition->id))
                 <form action="{{ route('unfavorite', $exhibition->id) }}" method="POST">
                     @csrf
@@ -43,9 +45,18 @@
                     </div>
                 </form>
                 @endif
-                @endif
+
+                @else
                 <div class="action-item">
-                    <button class="circle-btn" aria-label="コメント">
+                    <button class="circle-btn-disable" aria-label="お気に入り登録">
+                        <i class="fa-regular fa-star"></i>
+                    </button>
+                    <span class="action-count">{{ $exhibition->users->count() }}</span>
+                </div>
+                @endif
+
+                <div class="action-item">
+                    <button class="circle-btn-disable" aria-label="コメント">
                         <i class="fa-regular fa-comment"></i>
                     </button>
                     <span class="action-count">{{ $exhibition->comments->count() }}</span>
@@ -86,10 +97,11 @@
     <div class="comment-section">
         <h2>コメント({{ $exhibition->comments->count() }})</h2>
         @foreach($exhibition->comments as $comment)
+        <hr>
         <div>
             <p>
-                @if (Auth::user()->profile_image)
-                <img src="{{ asset('storage/profile_images/' . Auth::user()->profile_image) }}" alt="プロフィール画像" class="image">
+                @if ($comment->user && $comment->user->profile_image)
+                <img src="{{ asset('storage/profile_images/' . $comment->user->profile_image) }}" alt="プロフィール画像" class="image">
                 @else
                 <img src="{{ asset('images/default-icon.png') }}" alt="デフォルト画像" class="image">
                 @endif
@@ -98,6 +110,7 @@
             <p>{{ $comment->content }}</p>
         </div>
         @endforeach
+        <hr>
         @if(Auth::check())
         <form class="comment-box" method="POST" action="{{ route('comments.store', ['id' => $exhibition->id]) }}">
             @csrf
@@ -107,6 +120,11 @@
             <textarea name="content" placeholder="商品へのコメント" class="comment-input"></textarea>
             <button type="submit" class="comment-submit">コメントを送信する</button>
         </form>
+        @else
+        <div class="comment-box">
+            <textarea disabled placeholder="コメントするにはログインが必要です" class="comment-input"></textarea>
+            <button disabled class="comment-submit">コメントを送信する</button>
+        </div>
         @endif
     </div>
 </div>

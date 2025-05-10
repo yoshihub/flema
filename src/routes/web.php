@@ -3,6 +3,7 @@
 use App\Http\Controllers\ExhibitionController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\MyPageController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SellController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,3 +20,6 @@ Route::post('/sell', [SellController::class, 'store']);
 Route::post('/favorite/{id}', [FavoriteController::class, 'favorite'])->name('favorite');
 Route::post('/unfavorite/{id}', [FavoriteController::class, 'unfavorite'])->name('unfavorite');
 Route::post('/commemt/{id}', [ExhibitionController::class, 'comment'])->name('comments.store');
+
+Route::get('/purchase', [PurchaseController::class, 'index']);
+Route::post('/purchase', [PurchaseController::class, 'store']);

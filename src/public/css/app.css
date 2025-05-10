@@ -13,6 +13,7 @@
 
 .logo img {
     height: 30px;
+    width:200px;
 }
 
 .search-form {
@@ -50,7 +51,7 @@
     cursor: pointer;
 }
 
-.mypage-link{
+.a-link-color-white{
     color:white;
 }
 
@@ -61,4 +62,8 @@
     font-size: 14px;
     cursor: pointer;
     padding-bottom:3px;
+}
+
+.login-button{
+    margin-left:auto;
 }

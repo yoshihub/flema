@@ -15,7 +15,9 @@
     <header class="site-header">
         <div class="header-inner">
             <div class="logo">
-                <img src="/images/coachtech-logo-white.png" alt="COACHTECH">
+                <a href="/">
+                    <img src="{{ asset('images/logo.svg') }}" alt="ロゴ">
+                </a>
             </div>
             @if (Auth::check())
             <form class="search-form">
@@ -26,8 +28,13 @@
                     @csrf
                     <button type="submit" class="logout-button">ログアウト</button>
                 </form>
-                <a href="/mypage" class="mypage-link">マイページ</a>
+                <a href="/mypage" class="a-link-color-white">マイページ</a>
                 <a href="/sell" class="sell-button">出品</a>
+            </nav>
+            @else
+            <nav class="nav-links" style="margin-left:auto;">
+                <a href="/login" class="a-link-color-white login-button">ログイン</a>
+                <a href="/register" class="a-link-color-white">登録</a>
             </nav>
             @endif
         </div>
