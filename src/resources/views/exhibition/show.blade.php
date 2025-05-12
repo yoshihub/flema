@@ -64,7 +64,7 @@
             </div>
 
             @if(Auth::check())
-            <a href="#" class="purchase-btn">購入手続きへ</a>
+            <a href="{{ route('purchase.index', $exhibition->id) }}" class="purchase-btn">購入手続きへ</a>
             @endif
 
             <div class="product-description">

@@ -10,16 +10,18 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [ExhibitionController::class, 'index']);
 Route::get('/exhibition/{id}', [ExhibitionController::class, 'show'])->name('exhibition.show');
 
-Route::get('/mypage', [MyPageController::class, 'index']);
-Route::get('/mypage/profile', [MyPageController::class, 'profile']);
-Route::post('/mypage/profile', [MyPageController::class, 'update']);
 
-Route::get('/sell', [SellController::class, 'index']);
-Route::post('/sell', [SellController::class, 'store']);
+Route::middleware(['auth'])->group(function () {
+    Route::get('/mypage', [MyPageController::class, 'index']);
+    Route::get('/mypage/profile', [MyPageController::class, 'profile']);
+    Route::post('/mypage/profile', [MyPageController::class, 'update']);
 
-Route::post('/favorite/{id}', [FavoriteController::class, 'favorite'])->name('favorite');
-Route::post('/unfavorite/{id}', [FavoriteController::class, 'unfavorite'])->name('unfavorite');
-Route::post('/commemt/{id}', [ExhibitionController::class, 'comment'])->name('comments.store');
+    Route::get('/sell', [SellController::class, 'index']);
+    Route::post('/sell', [SellController::class, 'store']);
 
-Route::get('/purchase', [PurchaseController::class, 'index']);
-Route::post('/purchase', [PurchaseController::class, 'store']);
+    Route::post('/favorite/{id}', [FavoriteController::class, 'favorite'])->name('favorite');
+    Route::post('/unfavorite/{id}', [FavoriteController::class, 'unfavorite'])->name('unfavorite');
+    Route::post('/commemt/{id}', [ExhibitionController::class, 'comment'])->name('comments.store');
+    Route::get('/purchase/{id}', [PurchaseController::class, 'index'])->name('purchase.index');
+    Route::post('/purchase', [PurchaseController::class, 'store'])->name('purchase.store');
+});

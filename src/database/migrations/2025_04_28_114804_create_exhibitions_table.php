@@ -20,6 +20,7 @@ class CreateExhibitionsTable extends Migration
             $table->string('brand')->nullable();
             $table->text('explanation');
             $table->integer('price');
+            $table->boolean('sold')->default(false);
             $table->unsignedBigInteger('condition_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();

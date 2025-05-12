@@ -1,0 +1,125 @@
+.image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.exhibition-card{
+    display: flex;
+}
+
+.purchase-select-container{
+    display: flex;
+    padding:50px 30px;
+}
+
+.left-container{
+    width:65%;
+}
+.right-container {
+    width: 35%;
+    margin-left: 20px;
+}
+
+.exhibition-img{
+    margin-right:25px;
+}
+
+.exhibition-name{
+    font-size:36px;
+    font-weight: bold;
+    margin-top:0;
+    margin-bottom:0;
+}
+
+.exhibition-price{
+    font-size: 24px;
+    margin-top: 5px;
+}
+
+.hr-design{
+    background-color: #9F9F9F;
+    height:3px;
+    margin:20px 0;
+}
+
+.item-title{
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.purchase-address{
+    margin-left:20px;
+}
+
+.purchase-address input{
+    display:block;
+    border:none;
+    font-size: 18px;
+}
+
+.shipping-address{
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+}
+
+.shipping-address a{
+    text-decoration: none;
+    color:#2B84D2;
+}
+
+.payment-select{
+    margin-left: 20px;
+    width: 250px;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #fff;
+    font-size: 14px;
+    color: #333;
+}
+
+.purchase-button{
+    width:100%;
+    border: none;
+    background-color: #EE5252;
+    color:white;
+    padding:10px;
+    font-weight: bold;
+    cursor:pointer;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.payment-box {
+    border: 1px solid #ccc;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.payment-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 30px;
+    border-top: 1px solid #ccc;
+}
+
+.payment-row:first-child {
+    border-top: none;
+}
+
+.label {
+    font-size: 14px;
+    color: #333;
+}
+
+.value {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+.error-message{
+    color:red;
+}
