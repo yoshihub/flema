@@ -1,0 +1,45 @@
+.address-form-container {
+    max-width: 500px;
+    text-align: center;
+    margin:20px auto;
+}
+
+.address-form-container h2 {
+    margin-bottom: 50px;
+    font-size: 24px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.submit-button {
+    background-color: #f44;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    width: 100%;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size:18px;
+    margin-top:30px;
+}
+
+.submit-button:hover {
+    background-color: #d33;
+}

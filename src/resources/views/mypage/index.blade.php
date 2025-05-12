@@ -18,4 +18,10 @@
 
     <a href="/mypage/profile" class="edit-button">プロフィールを編集</a>
 </div>
+
+<div class="link-group">
+    <a href="/mypage" class="sell-link {{ request('page') !== 'mylist' ? 'active' : '' }}">出品した商品</a>
+    <a href="/?page=mylist" class="purchase-link {{ request('page') === 'mylist' ? 'active' : '' }}">購入した商品</a>
+</div>
+<hr class="hr-line">
 @endsection

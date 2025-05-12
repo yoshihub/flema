@@ -35,3 +35,34 @@
     background-color: #EE5252;
     color: white;
 }
+
+.link-group {
+    margin-top: 30px;
+    margin-left: 60px;
+}
+
+
+.sell-link {
+    text-decoration: none;
+    color: #5F5F5F;
+    font-weight: bold;
+}
+
+.purchase-link {
+    margin-left: 30px;
+    text-decoration: none;
+    color: #5F5F5F;
+    font-weight: bold;
+}
+
+.active{
+    color:red;
+}
+
+.hr-line {
+    height: 2px;
+    background-color: #C3C3C3;
+    border: none;
+    margin: 0;
+    margin-bottom: 30px;
+}

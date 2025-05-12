@@ -27,9 +27,16 @@ class PurchaseController extends Controller
         ]);
 
         $exhibition = Exhibition::find($request->exhibition_id);
-        $exhibition->sold = true;
+        $exhibition->is_sold = true;
         $exhibition->save();
 
         return back();
     }
+
+    public function purchaseAddress()
+    {
+        return view('purchaseAddress.index');
+    }
+
+    public function purchaseAddressStore() {}
 }

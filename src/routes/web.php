@@ -21,7 +21,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/favorite/{id}', [FavoriteController::class, 'favorite'])->name('favorite');
     Route::post('/unfavorite/{id}', [FavoriteController::class, 'unfavorite'])->name('unfavorite');
+
     Route::post('/commemt/{id}', [ExhibitionController::class, 'comment'])->name('comments.store');
+
     Route::get('/purchase/{id}', [PurchaseController::class, 'index'])->name('purchase.index');
     Route::post('/purchase', [PurchaseController::class, 'store'])->name('purchase.store');
+
+    Route::get('/purchaseAddress', [PurchaseController::class, 'purchaseAddress'])->name('purchaseAddress.index');
+    Route::post('/purchaseAddress', [PurchaseController::class, 'purchaseAddressStore'])->name('purchaseAddress.store');
 });
