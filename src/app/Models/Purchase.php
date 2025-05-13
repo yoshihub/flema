@@ -15,5 +15,6 @@ class Purchase extends Model
         'address',
         'building',
         'exhibition_id',
+        'user_id',
     ];
 }

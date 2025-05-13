@@ -16,6 +16,7 @@ class CreatePurchasesTable extends Migration
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('exhibition_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('payment');
             $table->string('postCode');
             $table->string('address');
@@ -23,6 +24,7 @@ class CreatePurchasesTable extends Migration
             $table->timestamps();
 
             $table->foreign('exhibition_id')->references('id')->on('exhibitions')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

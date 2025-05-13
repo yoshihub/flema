@@ -24,6 +24,7 @@ class PurchaseController extends Controller
             'address'       => $request->address,
             'building'      => $request->building,
             'exhibition_id' => $request->exhibition_id,
+            'user_id'       => Auth::id(),
         ]);
 
         $exhibition = Exhibition::find($request->exhibition_id);

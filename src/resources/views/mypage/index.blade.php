@@ -20,8 +20,20 @@
 </div>
 
 <div class="link-group">
-    <a href="/mypage" class="sell-link {{ request('page') !== 'mylist' ? 'active' : '' }}">出品した商品</a>
-    <a href="/?page=mylist" class="purchase-link {{ request('page') === 'mylist' ? 'active' : '' }}">購入した商品</a>
+    <a href="/mypage?tab=sell" class="sell-link {{ request('tab') === 'sell' ? 'active' : '' }}">出品した商品</a>
+    <a href="/mypage?tab=buy" class="purchase-link {{ request('tab') === 'buy' ? 'active' : '' }}">購入した商品</a>
 </div>
 <hr class="hr-line">
+<div class="card-list">
+    @foreach($exhibitions as $exhibition)
+    <div class="card">
+        @if ($exhibition->exhibition_image)
+        <img src="{{ asset('storage/exhibition_images/' . $exhibition->exhibition_image) }}" alt="商品画像">
+        @else
+        <img src="{{ asset('images/default-icon.png') }}" alt="デフォルト画像">
+        @endif
+        <p class="product-name">{{$exhibition->name}}</p>
+    </div>
+    @endforeach
+</div>
 @endsection

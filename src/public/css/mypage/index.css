@@ -66,3 +66,20 @@
     margin: 0;
     margin-bottom: 30px;
 }
+
+.card-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin: 15px;
+}
+
+.card img {
+    width: 150px;
+    height: 150px;
+}
+
+.card-list p {
+    font-size: 12px;
+    margin: 0;
+}

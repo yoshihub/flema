@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddressRequest;
 use App\Http\Requests\ProfileRequest;
+use App\Models\Exhibition;
 use App\Models\UserAddress;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Container\Container;
@@ -11,11 +12,25 @@ use Illuminate\Http\Request;
 
 class MyPageController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
 
-        return view('mypage.index', compact('user'));
+        $tab = $request->query('tab');
+
+        if ($tab === 'buy') {
+            $exhibitions = Exhibition::whereIn('id', function ($query) use ($user) {
+                $query->select('exhibition_id')
+                    ->from('purchases')
+                    ->where('user_id', $user->id);
+            })->get();
+        } elseif ($tab === 'sell') {
+            $exhibitions = Exhibition::where('user_id', '=', Auth::id())->get();
+        } else {
+            $exhibitions = collect();
+        }
+
+        return view('mypage.index', compact('exhibitions'));
     }
 
     public function profile()
@@ -65,6 +80,8 @@ class MyPageController extends Controller
             ]);
         }
 
-        return view('mypage.index');
+        $exhibitions = collect();
+
+        return view('mypage.index', compact('exhibitions'));
     }
 }
