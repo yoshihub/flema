@@ -11,7 +11,7 @@ Route::get('/', [ExhibitionController::class, 'index'])->name('exhibition.index'
 Route::get('/exhibition/{id}', [ExhibitionController::class, 'show'])->name('exhibition.show');
 
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/mypage', [MyPageController::class, 'index']);
     Route::get('/mypage/profile', [MyPageController::class, 'profile']);
     Route::post('/mypage/profile', [MyPageController::class, 'update']);

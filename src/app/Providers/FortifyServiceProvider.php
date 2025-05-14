@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
 use Illuminate\Container\Container;
+use Laravel\Fortify\Contracts\RegisterResponse;
 
 
 class FortifyServiceProvider extends ServiceProvider
@@ -20,7 +21,15 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // RegisterResponseをカスタマイズ
+        $this->app->singleton(RegisterResponse::class, function () {
+            return new class implements RegisterResponse {
+                public function toResponse($request)
+                {
+                    return redirect()->route('verification.notice');
+                }
+            };
+        });
     }
 
     /**
@@ -31,6 +40,11 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::registerView(function () {
             return view('auth.register');
+        });
+
+        // メール認証ビューを設定
+        Fortify::verifyEmailView(function () {
+            return view('auth.verify-email');
         });
 
         Fortify::loginView(function () {
@@ -45,7 +59,7 @@ class FortifyServiceProvider extends ServiceProvider
 
             $user = \App\Models\User::where('email', $request->email)->first();
 
-            if ($user && \Hash::check($request->password, $user->password)) {
+            if ($user && Hash::check($request->password, $user->password)) {
                 return $user;
             }
 
