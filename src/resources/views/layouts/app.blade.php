@@ -19,9 +19,9 @@
                     <img src="{{ asset('images/logo.svg') }}" alt="ロゴ">
                 </a>
             </div>
-            <form class="search-form" action="{{ route('exhibition.index') }}" method="GET">
-                <input type="text" name="search" placeholder="なにをお探しですか？">
-            </form>
+            <div class="search-form">
+                <input type="text" id="search-input" placeholder="なにをお探しですか？">
+            </div>
             @if (Auth::check())
             <nav class="nav-links">
                 <form method="POST" action="{{ route('logout') }}">
@@ -49,6 +49,44 @@
         @yield('content')
     </main>
     @yield('js')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 検索フィールドの参照
+            const searchInput = document.getElementById('search-input');
+
+            // URLから検索キーワードを取得して検索フィールドに設定
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchParam = urlParams.get('search');
+            if (searchParam) {
+                searchInput.value = searchParam;
+            }
+
+            // おすすめとマイリストのリンクを取得
+            const links = document.querySelectorAll('.index-link, .mylist-link');
+
+            // 各リンクにクリックイベントを追加
+            links.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    // デフォルトの遷移をキャンセル
+                    event.preventDefault();
+
+                    // 現在のリンクのURL
+                    const linkUrl = new URL(this.href);
+
+                    // 検索フィールドの値を取得
+                    const searchValue = searchInput.value.trim();
+
+                    // 検索値があれば、URLに追加
+                    if (searchValue) {
+                        linkUrl.searchParams.set('search', searchValue);
+                    }
+
+                    // 修正したURLに遷移
+                    window.location.href = linkUrl.toString();
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

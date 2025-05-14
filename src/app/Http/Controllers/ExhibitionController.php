@@ -16,15 +16,37 @@ class ExhibitionController extends Controller
     public function index(Request $request)
     {
         $page = $request->query('page');
+        $search = $request->query('search');
 
         if ($page === 'mylist') {
             if (Auth::check()) {
-                $exhibitions = Auth::user()->exhibitions;
+                // マイリスト表示
+                $query = Exhibition::where('user_id', Auth::id());
+
+                // 検索条件がある場合は適用
+                if ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                }
+
+                $exhibitions = $query->get();
             } else {
                 $exhibitions = collect();
             }
         } else {
-            $exhibitions = Exhibition::where('user_id', '!=', Auth::id())->get();
+            // 通常表示
+            $query = Exhibition::query();
+
+            // 検索条件がある場合は適用
+            if ($search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            }
+
+            // 自分の出品以外を取得
+            if (Auth::check()) {
+                $query->where('user_id', '!=', Auth::id());
+            }
+
+            $exhibitions = $query->get();
         }
 
         return view('exhibition.index', compact('exhibitions'));
