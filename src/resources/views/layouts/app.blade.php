@@ -19,10 +19,10 @@
                     <img src="{{ asset('images/logo.svg') }}" alt="ロゴ">
                 </a>
             </div>
-            @if (Auth::check())
-            <form class="search-form">
-                <input type="text" placeholder="なにをお探しですか？">
+            <form class="search-form" action="{{ route('exhibition.index') }}" method="GET">
+                <input type="text" name="search" placeholder="なにをお探しですか？">
             </form>
+            @if (Auth::check())
             <nav class="nav-links">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
@@ -40,6 +40,12 @@
         </div>
     </header>
     <main>
+        @if (session('message'))
+        <div class="flash-message">
+            {{ session('message') }}
+        </div>
+        @endif
+
         @yield('content')
     </main>
     @yield('js')
