@@ -37,6 +37,6 @@ class SellController extends Controller
 
         $exhibition->categories()->attach($request->categories);
 
-        return redirect('/sell');
+        return back()->with('message', '出品しました');
     }
 }

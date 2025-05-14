@@ -7,7 +7,7 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SellController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [ExhibitionController::class, 'index']);
+Route::get('/', [ExhibitionController::class, 'index'])->name('exhibition.index');
 Route::get('/exhibition/{id}', [ExhibitionController::class, 'show'])->name('exhibition.show');
 
 

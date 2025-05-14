@@ -19,7 +19,12 @@
             @else
             <img src="{{ asset('images/default-icon.png') }}" alt="デフォルト画像">
             @endif
-            <p class="product-name">{{$exhibition->name}}</p>
+            <p class="product-name">
+                {{$exhibition->name}}
+                @if($exhibition->is_sold)
+                <span>Sold</span>
+                @endif
+            </p>
         </a>
     </div>
     @endforeach

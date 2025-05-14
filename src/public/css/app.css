@@ -67,3 +67,22 @@
 .login-button{
     margin-left:auto;
 }
+
+.flash-message {
+    padding: 10px 20px;
+    border-radius: 4px;
+    margin: 0 auto;
+    max-width: 1100px;
+    text-align: center;
+    animation: fadeOut 5s forwards;
+    position: relative;
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    70% { opacity: 1; }
+    100% { opacity: 0; }
+}

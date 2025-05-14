@@ -31,7 +31,7 @@ class PurchaseController extends Controller
         $exhibition->is_sold = true;
         $exhibition->save();
 
-        return back();
+        return back()->with('message', '購入しました');
     }
 
     public function purchaseAddress()

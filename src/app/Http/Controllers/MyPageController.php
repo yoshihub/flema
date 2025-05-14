@@ -82,6 +82,6 @@ class MyPageController extends Controller
 
         $exhibitions = collect();
 
-        return view('mypage.index', compact('exhibitions'));
+        return redirect('/mypage')->with('message', 'プロフィールを編集しました');
     }
 }

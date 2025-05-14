@@ -50,3 +50,12 @@
 .active {
     color: red;
 }
+
+.sold{
+    background-color: red;
+    color:white;
+    border-radius: 3px;
+    font-weight: bold;
+    padding:2px 3px;
+    font-size:14px;
+}
