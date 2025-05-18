@@ -22,7 +22,7 @@
             <p class="product-name">
                 {{$exhibition->name}}
                 @if($exhibition->is_sold)
-                <span>Sold</span>
+                <span class="sold">Sold</span>
                 @endif
             </p>
         </a>

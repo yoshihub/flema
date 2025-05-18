@@ -26,7 +26,7 @@ class CreatePurchasesTable extends Migration
             $table->foreign('exhibition_id')->references('id')->on('exhibitions')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
-    }
+    }b
 
     /**
      * Reverse the migrations.

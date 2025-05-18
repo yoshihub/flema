@@ -36,7 +36,7 @@
         <hr class="hr-design">
         <div class="shipping-address">
             <p class="item-title">配送先</p>
-            <a href="/purchaseAddress">変更する</a>
+            <a href="{{ route('purchase.address.index', $exhibition->id)  }}">変更する</a>
         </div>
         <div class="purchase-address">
             <span>〒</span><input type="text" name="postCode" value="{{ $userAddress->postCode }}" style="display:inline-block;">

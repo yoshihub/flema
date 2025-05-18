@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateExhibitionUserTable extends Migration
 {
+    // お気に入り登録で使うテーブル
     /**
      * Run the migrations.
      *

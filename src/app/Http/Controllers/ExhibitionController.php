@@ -5,10 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CommentRequest;
 use Illuminate\Http\Request;
 use App\Models\Exhibition;
-use App\Models\Category;
 use App\Models\Comment;
-use App\Models\Condition;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
 class ExhibitionController extends Controller
@@ -67,6 +64,6 @@ class ExhibitionController extends Controller
             'exhibition_id' => $id,
         ]);
 
-        return back();
+        return back()->with('message', 'コメントしました');;
     }
 }
