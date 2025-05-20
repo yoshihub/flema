@@ -18,7 +18,11 @@ class ExhibitionController extends Controller
         if ($page === 'mylist') {
             if (Auth::check()) {
                 // マイリスト表示
-                $query = Exhibition::where('user_id', Auth::id());
+                $query = Exhibition::whereIn('id', function ($query) {
+                    $query->select('exhibition_id')
+                        ->from('exhibition_user')
+                        ->where('user_id', Auth::id());
+                });
 
                 // 検索条件がある場合は適用
                 if ($search) {
