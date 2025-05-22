@@ -5,7 +5,7 @@
 ### Docker ビルド
 
 ```bash
-git clone git@github.com:estra-inc/confirmation-test-contact-form.git
+git clone https://github.com/yoshihub/flema.git
 ```
 
 1. DockerDesktop アプリを立ち上げる
