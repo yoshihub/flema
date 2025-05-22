@@ -71,8 +71,9 @@ git clone git@github.com:estra-inc/confirmation-test-contact-form.git
 -   MySQL 8.0.26
 
 ## ER 図
+![スクリーンショット 2025-05-18 15 27 26](https://github.com/user-attachments/assets/d0815330-a10a-4c20-8cc3-bc51300d4e9c)
 
-<img src="er.drawio.png" style="background-color: white;" alt="ER図">
+
 
 ## アクセス URL
 
