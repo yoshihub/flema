@@ -43,3 +43,7 @@
 .submit-button:hover {
     background-color: #d33;
 }
+
+.error-message {
+    color: #ff0000;
+}
