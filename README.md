@@ -96,5 +96,6 @@ git clone git@github.com:yoshihub/flema.git
 -   phpMyAdmin：http://localhost:8080/
 
 ## 認証済みユーザーアカウント
-メールアドレス aaa@aaa.com
-パスワード    hogehoge1
+
+- メールアドレス aaa@aaa.com
+- パスワード    hogehoge1
