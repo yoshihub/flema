@@ -32,6 +32,7 @@ git clone git@github.com:yoshihub/flema.git
 
     - 「.env.example」ファイルを 「.env」ファイルに命名を変更。または、新しく.env ファイルを作成
     - .env に以下の環境変数を追加
+    - メール認証は mailtrap を使用
         ```
         DB_CONNECTION=mysql
         DB_HOST=mysql
@@ -39,6 +40,15 @@ git clone git@github.com:yoshihub/flema.git
         DB_DATABASE=laravel_db
         DB_USERNAME=laravel_user
         DB_PASSWORD=laravel_pass
+
+        MAIL_MAILER=smtp
+        MAIL_HOST=sandbox.smtp.mailtrap.io
+        MAIL_PORT=2525
+        MAIL_USERNAME=mailtrapのユーザー名
+        MAIL_PASSWORD=mailtrapのパスワード
+        MAIL_ENCRYPTION=tls
+        MAIL_FROM_ADDRESS=flema@example.com
+        MAIL_FROM_NAME="${APP_NAME}"
         ```
 
 4. アプリケーションキーの作成
