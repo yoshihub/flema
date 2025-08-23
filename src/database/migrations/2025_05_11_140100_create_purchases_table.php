@@ -21,6 +21,10 @@ class CreatePurchasesTable extends Migration
             $table->string('postCode');
             $table->string('address');
             $table->string('building');
+            // 取引完了かどうか（初期は未完了）
+            $table->boolean('is_completed')->default(false);
+            // 完了日時（完了時に入れる）
+            $table->timestamp('completed_at')->nullable();
             $table->timestamps();
 
             $table->foreign('exhibition_id')->references('id')->on('exhibitions')->onDelete('cascade');
