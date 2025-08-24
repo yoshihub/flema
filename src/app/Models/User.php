@@ -47,8 +47,39 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(UserAddress::class);
     }
 
+    // 自分が送った取引メッセージ
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
+
+    // 自分が既読基準を持つ取引（未読件数の集計などで使用）
+    public function messageReads()
+    {
+        return $this->hasMany(MessageRead::class);
+    }
+
+    // 自分が購入した取引
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class, 'user_id');
+    }
+
+    // 自分が出品した商品（Exhibition 側の user_id は seller）
     public function exhibitions()
     {
-        return $this->belongsToMany(Exhibition::class, 'exhibition_user');
+        return $this->hasMany(Exhibition::class, 'user_id');
+    }
+
+    // 自分が与えたレビュー（reviewer_id = 自分）
+    public function reviewsGiven()
+    {
+        return $this->hasMany(Review::class, 'reviewer_id');
+    }
+
+    // 自分が受け取ったレビュー（reviewee_id = 自分）→ プロフィールの平均表示に使用
+    public function reviewsReceived()
+    {
+        return $this->hasMany(Review::class, 'reviewee_id');
     }
 }

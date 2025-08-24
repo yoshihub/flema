@@ -40,6 +40,7 @@ class Exhibition extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
+    // 出品者
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -63,5 +64,11 @@ class Exhibition extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    // この商品に紐づく取引（1商品=1取引を想定するなら hasOne）
+    public function purchase()
+    {
+        return $this->hasOne(Purchase::class);
     }
 }
