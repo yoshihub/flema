@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AddressRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Models\Exhibition;
+use App\Models\Message;
+use App\Models\Purchase;
 use App\Models\UserAddress;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Container\Container;
@@ -24,13 +26,36 @@ class MyPageController extends Controller
                     ->from('purchases')
                     ->where('user_id', $user->id);
             })->get();
+            $purchases = collect();
         } elseif ($tab === 'sell') {
             $exhibitions = Exhibition::where('user_id', '=', Auth::id())->get();
+            $purchases = collect();
+        } elseif ($tab === 'trade') {
+            // 自分が購入者または出品者で、かつ取引が未完了のものを、最新メッセージ順にソート
+            $exhibitions = collect();
+            $purchases = Purchase::where('is_completed', false)
+                ->where(function ($q) use ($user) {
+                    // 購入者として
+                    $q->where('user_id', $user->id)
+                        // または出品者として（出品の所有者）
+                        ->orWhereHas('exhibition', function ($qq) use ($user) {
+                            $qq->where('user_id', $user->id);
+                        });
+                })
+                ->with('exhibition')
+                ->orderByDesc(
+                    Message::select('created_at')
+                        ->whereColumn('messages.purchase_id', 'purchases.id')
+                        ->orderBy('created_at', 'desc')
+                        ->limit(1)
+                )
+                ->get();
         } else {
             $exhibitions = collect();
+            $purchases = collect();
         }
 
-        return view('mypage.index', compact('exhibitions'));
+        return view('mypage.index', compact('exhibitions', 'purchases'));
     }
 
     public function profile()

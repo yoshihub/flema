@@ -65,4 +65,27 @@ class PurchaseController extends Controller
         return redirect()->route('purchase.index', $request->exhibition_id)
             ->with('message', '住所を更新しました');
     }
+
+    public function complete(Purchase $purchase)
+    {
+        $user = Auth::user();
+
+        // 購入者のみ実行可能
+        if ($purchase->user_id !== $user->id) {
+            abort(403, '購入者のみが取引を完了できます。');
+        }
+
+        // すでに完了済みならそのままチャットに戻る
+        if ($purchase->is_completed) {
+            return redirect()->route('purchase.chat', $purchase)
+                ->with('message', 'すでに取引は完了しています。');
+        }
+
+        $purchase->is_completed = true;
+        $purchase->completed_at = now();
+        $purchase->save();
+
+        return redirect()->route('purchase.chat', $purchase)
+            ->with('message', '取引を完了しました。');
+    }
 }
