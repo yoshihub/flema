@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Purchase;
 use App\Models\Message;
+use App\Models\MessageRead;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreMessageRequest;
 use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
@@ -16,6 +18,17 @@ class ChatController extends Controller
         if ($purchase->user_id !== $user->id && $purchase->exhibition->user_id !== $user->id) {
             abort(403, 'この取引にアクセスする権限がありません。');
         }
+
+        // 既読基準を更新（この時点で閲覧したとみなす）
+        MessageRead::updateOrCreate(
+            [
+                'purchase_id' => $purchase->id,
+                'user_id' => $user->id,
+            ],
+            [
+                'last_read_at' => now(),
+            ]
+        );
 
         // 取引に関連するメッセージを取得
         $messages = $purchase->messages()->with('user')->get();
@@ -46,12 +59,9 @@ class ChatController extends Controller
         return view('chat.show', compact('purchase', 'messages', 'otherUser', 'otherPurchases'));
     }
 
-    public function store(Request $request, Purchase $purchase)
+    public function store(StoreMessageRequest $request, Purchase $purchase)
     {
-        $request->validate([
-            'content' => 'required|string|max:400',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
-        ]);
+        // バリデーションは StoreMessageRequest で実施
 
         $user = Auth::user();
 

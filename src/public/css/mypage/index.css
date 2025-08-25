@@ -53,6 +53,22 @@
     text-decoration: none;
     color: #5F5F5F;
     font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #EE5252;
+    color: #fff;
+    border-radius: 9px;
+    font-size: 12px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 6px;
+    margin-left: 8px;
 }
 
 .active{
@@ -82,4 +98,26 @@
 .card-list p {
     font-size: 12px;
     margin: 0;
+}
+
+.badge-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.badge-on-card {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    z-index: 2;
+    background-color: #EE5252;
+    color: #fff;
+    border-radius: 9px;
+    font-size: 11px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }

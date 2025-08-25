@@ -20,6 +20,10 @@ class MyPageController extends Controller
 
         $tab = $request->query('tab');
 
+        // 未読件数系は常に初期化しておく（他タブでも compact で渡すため）
+        $unreadCounts = [];
+        $totalUnread = 0;
+
         if ($tab === 'buy') {
             $exhibitions = Exhibition::whereIn('id', function ($query) use ($user) {
                 $query->select('exhibition_id')
@@ -42,7 +46,12 @@ class MyPageController extends Controller
                             $qq->where('user_id', $user->id);
                         });
                 })
-                ->with('exhibition')
+                ->with([
+                    'exhibition',
+                    'messageReads' => function ($q) use ($user) {
+                        $q->where('user_id', $user->id);
+                    }
+                ])
                 ->orderByDesc(
                     Message::select('created_at')
                         ->whereColumn('messages.purchase_id', 'purchases.id')
@@ -50,12 +59,29 @@ class MyPageController extends Controller
                         ->limit(1)
                 )
                 ->get();
+
+            // 未読件数の算出（相手からのメッセージで、last_read_at より新しいもの）
+            $unreadCounts = [];
+            $totalUnread = 0;
+            foreach ($purchases as $p) {
+                $lastReadAt = optional($p->messageReads->first())->last_read_at;
+                $count = Message::where('purchase_id', $p->id)
+                    ->where('user_id', '!=', $user->id)
+                    ->when($lastReadAt, function ($query) use ($lastReadAt) {
+                        $query->where('created_at', '>', $lastReadAt);
+                    })
+                    ->count();
+                $unreadCounts[$p->id] = $count;
+                $totalUnread += $count;
+            }
         } else {
             $exhibitions = collect();
             $purchases = collect();
+            $unreadCounts = [];
+            $totalUnread = 0;
         }
 
-        return view('mypage.index', compact('exhibitions', 'purchases'));
+        return view('mypage.index', compact('exhibitions', 'purchases', 'unreadCounts', 'totalUnread'));
     }
 
     public function profile()

@@ -72,8 +72,6 @@
                     @endif
                     <span class="message-username">{{ $message->user->name }}</span>
                 </div>
-                @endif
-
                 <div class="message-content">
                     @if($message->image_path)
                     <img src="{{ asset('storage/chat_images/' . $message->image_path) }}" alt="送信画像" class="message-image">
@@ -82,15 +80,32 @@
                     <p class="message-text">{{ $message->content }}</p>
                     @endif
                 </div>
+                @endif
 
                 @if($message->user_id === Auth::id())
                 <div class="message-header sent-header">
+                    <span class="message-username">{{ Auth::user()->name }}</span>
                     @if (Auth::user()->profile_image)
                     <img src="{{ asset('storage/profile_images/' . Auth::user()->profile_image) }}" alt="プロフィール画像" class="message-avatar">
                     @else
                     <img src="{{ asset('images/default-icon.png') }}" alt="デフォルト画像" class="message-avatar">
                     @endif
-                    <span class="message-username">{{ Auth::user()->name }}</span>
+                </div>
+                <div class="message-content">
+                    @if($message->image_path)
+                    <img src="{{ asset('storage/chat_images/' . $message->image_path) }}" alt="送信画像" class="message-image">
+                    @endif
+                    @if($message->content)
+                    <p class="message-text">{{ $message->content }}</p>
+                    @endif
+                </div>
+                <div class="message-actions">
+                    <a class="action-link" href="{{ route('messages.edit', ['purchase' => $purchase->id, 'message' => $message->id]) }}">編集</a>
+                    <form action="{{ route('messages.destroy', ['purchase' => $purchase->id, 'message' => $message->id]) }}" method="POST" class="inline-form">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="action-link danger">削除</button>
+                    </form>
                 </div>
                 @endif
             </div>
@@ -101,10 +116,20 @@
         <div class="message-input-container">
             <form action="{{ route('messages.store', $purchase) }}" method="POST" enctype="multipart/form-data" class="message-form">
                 @csrf
+                @if ($errors->has('content') || $errors->has('image'))
+                <div class="validation-errors" style="color: #d93025; margin-bottom: 8px;">
+                    @foreach ($errors->get('content') as $error)
+                    <div class="error-item">{{ $error }}</div>
+                    @endforeach
+                    @foreach ($errors->get('image') as $error)
+                    <div class="error-item">{{ $error }}</div>
+                    @endforeach
+                </div>
+                @endif
                 <div class="input-group">
-                    <input type="text" name="content" placeholder="取引メッセージを記入してください" class="message-input" required>
+                    <input type="text" name="content" value="{{ old('content') }}" placeholder="取引メッセージを記入してください" class="message-input">
                     <label for="image" class="image-upload-button">画像を追加</label>
-                    <input type="file" id="image" name="image" accept="image/*" style="display: none;">
+                    <input type="file" id="image" name="image" accept=".png,.jpeg" style="display: none;">
                     <button type="submit" class="send-button">
                         <svg viewBox="0 0 24 24" width="24" height="24">
                             <path fill="currentColor" d="M2,21L23,12L2,3V10L17,12L2,14V21Z" />
