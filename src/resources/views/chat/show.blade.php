@@ -141,3 +141,40 @@
     </div>
 </div>
 @endsection
+
+@section('js')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var input = document.querySelector('.message-input');
+        var form = document.querySelector('.message-form');
+        if (!input) return;
+
+        // purchase x user 毎にキーを分ける（別ユーザーで干渉しないように）
+        var storageKey = 'chat_draft_{{ $purchase->id }}_{{ Auth::id() }}';
+
+        // 初期復元（oldがあればold優先）
+        if (!input.value) {
+            var saved = sessionStorage.getItem(storageKey);
+            if (saved) {
+                input.value = saved;
+            }
+        }
+
+        // 入力の都度保存（高頻度でも軽量）
+        input.addEventListener('input', function() {
+            try {
+                sessionStorage.setItem(storageKey, input.value);
+            } catch (e) {}
+        });
+
+        // 送信時クリア
+        if (form) {
+            form.addEventListener('submit', function() {
+                try {
+                    sessionStorage.removeItem(storageKey);
+                } catch (e) {}
+            });
+        }
+    });
+</script>
+@endsection

@@ -8,6 +8,7 @@ use App\Models\MessageRead;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreMessageRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ChatController extends Controller
 {
@@ -83,6 +84,101 @@ class ChatController extends Controller
         }
 
         $message->save();
+
+        return redirect()->route('purchase.chat', $purchase);
+    }
+
+    public function edit(Purchase $purchase, Message $message)
+    {
+        $user = Auth::user();
+
+        // 取引関係者か確認
+        if ($purchase->user_id !== $user->id && $purchase->exhibition->user_id !== $user->id) {
+            abort(403, 'この取引にアクセスする権限がありません。');
+        }
+
+        // メッセージがこの取引に属しているか確認
+        if ($message->purchase_id !== $purchase->id) {
+            abort(404);
+        }
+
+        // 自分のメッセージのみ編集可
+        if ($message->user_id !== $user->id) {
+            abort(403, 'このメッセージを編集する権限がありません。');
+        }
+
+        return view('chat.edit', compact('purchase', 'message'));
+    }
+
+    public function update(StoreMessageRequest $request, Purchase $purchase, Message $message)
+    {
+        $user = Auth::user();
+
+        // 取引関係者か確認
+        if ($purchase->user_id !== $user->id && $purchase->exhibition->user_id !== $user->id) {
+            abort(403, 'この取引にアクセスする権限がありません。');
+        }
+
+        // メッセージがこの取引に属しているか確認
+        if ($message->purchase_id !== $purchase->id) {
+            abort(404);
+        }
+
+        // 自分のメッセージのみ更新可
+        if ($message->user_id !== $user->id) {
+            abort(403, 'このメッセージを更新する権限がありません。');
+        }
+
+        // 本文
+        $message->content = $request->content;
+
+        // 画像の削除指定がある場合
+        if ($request->boolean('remove_image')) {
+            if ($message->image_path) {
+                Storage::delete('public/chat_images/' . $message->image_path);
+            }
+            $message->image_path = null;
+        }
+
+        // 新しい画像がアップロードされた場合（差し替え）
+        if ($request->hasFile('image')) {
+            if ($message->image_path) {
+                Storage::delete('public/chat_images/' . $message->image_path);
+            }
+            $filename = time() . '.' . $request->image->getClientOriginalExtension();
+            $request->image->storeAs('public/chat_images', $filename);
+            $message->image_path = $filename;
+        }
+
+        $message->save();
+
+        return redirect()->route('purchase.chat', $purchase);
+    }
+
+    public function destroy(Purchase $purchase, Message $message)
+    {
+        $user = Auth::user();
+
+        // 取引関係者か確認
+        if ($purchase->user_id !== $user->id && $purchase->exhibition->user_id !== $user->id) {
+            abort(403, 'この取引にアクセスする権限がありません。');
+        }
+
+        // メッセージがこの取引に属しているか確認
+        if ($message->purchase_id !== $purchase->id) {
+            abort(404);
+        }
+
+        // 自分のメッセージのみ削除可
+        if ($message->user_id !== $user->id) {
+            abort(403, 'このメッセージを削除する権限がありません。');
+        }
+
+        if ($message->image_path) {
+            Storage::delete('public/chat_images/' . $message->image_path);
+        }
+
+        $message->delete();
 
         return redirect()->route('purchase.chat', $purchase);
     }
