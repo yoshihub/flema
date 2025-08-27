@@ -6,6 +6,8 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use App\Models\User;
+use App\Models\UserAddress;
 
 class ExhibitionSeeder extends Seeder
 {
@@ -16,6 +18,68 @@ class ExhibitionSeeder extends Seeder
      */
     public function run()
     {
+        // ダミーユーザーを3件作成（出品者A・出品者B・未紐づけユーザー）
+        $sellerA = User::firstOrCreate(
+            ['email' => 'seller1@example.com'],
+            [
+                'name' => 'Seller One',
+                'password' => bcrypt('password'),
+                'email_verified_at' => now(),
+                'remember_token' => Str::random(10),
+            ]
+        );
+
+        // 出品者Aの住所（なければ作成）
+        UserAddress::firstOrCreate(
+            ['user_id' => $sellerA->id],
+            [
+                'postCode' => '100-0001',
+                'address' => '東京都千代田区1-1-1',
+                'building' => 'テストAビル101',
+            ]
+        );
+
+        $sellerB = User::firstOrCreate(
+            ['email' => 'seller2@example.com'],
+            [
+                'name' => 'Seller Two',
+                'password' => bcrypt('password'),
+                'email_verified_at' => now(),
+                'remember_token' => Str::random(10),
+            ]
+        );
+
+        // 出品者Bの住所（なければ作成）
+        UserAddress::firstOrCreate(
+            ['user_id' => $sellerB->id],
+            [
+                'postCode' => '150-0001',
+                'address' => '東京都渋谷区1-2-3',
+                'building' => 'テストBビル202',
+            ]
+        );
+
+        // 紐づけなしのユーザー（要件上作成のみ）
+        $standalone = User::firstOrCreate(
+            ['email' => 'standalone@example.com'],
+            [
+                'name' => 'Standalone User',
+                'password' => bcrypt('password'),
+                'email_verified_at' => now(),
+                'remember_token' => Str::random(10),
+            ]
+        );
+
+        // 紐づけなしユーザーの住所（なければ作成）
+        UserAddress::firstOrCreate(
+            ['user_id' => $standalone->id],
+            [
+                'postCode' => '160-0001',
+                'address' => '東京都新宿区1-3-5',
+                'building' => 'スタンドアロンビル303',
+            ]
+        );
+
         $files = [
             [
                 'name' => '腕時計',
@@ -89,7 +153,7 @@ class ExhibitionSeeder extends Seeder
             ],
         ];
 
-        foreach ($files as $file) {
+        foreach ($files as $index => $file) {
             // 元画像のパス（public/sample_images/時計.jpg）
             $sourcePath = public_path('sample_images/' . $file['image']);
 
@@ -106,7 +170,8 @@ class ExhibitionSeeder extends Seeder
                 'explanation' => $file['explanation'],
                 'exhibition_image' => $filename,
                 'condition_id' => $file['condition'],
-                'user_id' => 1,
+                // 先頭5件は sellerA、後半5件は sellerB に紐づけ
+                'user_id' => $index < 5 ? $sellerA->id : $sellerB->id,
             ]);
 
             // 遅延させてファイル名が重複しないようにする

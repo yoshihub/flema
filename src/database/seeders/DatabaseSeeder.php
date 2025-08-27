@@ -21,9 +21,6 @@ class DatabaseSeeder extends Seeder
             ConditionSeeder::class,
         ]);
 
-        // その他のユーザーをファクトリーで作成
-        User::factory(5)->create();
-
         // 特定のユーザーが存在しない場合のみ作成
         if (!User::where('email', 'aaa@aaa.com')->exists()) {
             $user = User::create([

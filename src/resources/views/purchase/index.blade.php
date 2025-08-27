@@ -39,15 +39,15 @@
             <a href="{{ route('purchase.address.index', $exhibition->id)  }}">変更する</a>
         </div>
         <div class="purchase-address">
-            <span>〒</span><input type="text" name="postCode" value="{{ $userAddress->postCode }}" style="display:inline-block;">
+            <span>〒</span><input type="text" name="postCode" value="{{ optional($userAddress)->postCode }}" style="display:inline-block;">
             @error('postCode')
             <p class="error-message">{{ $message }}</p>
             @enderror
-            <input type="text" name="address" value="{{ $userAddress->address }}">
+            <input type="text" name="address" value="{{ optional($userAddress)->address }}">
             @error('address')
             <p class="error-message">{{ $message }}</p>
             @enderror
-            <input type="text" name="building" value="{{ $userAddress->building }}">
+            <input type="text" name="building" value="{{ optional($userAddress)->building }}">
             @error('building')
             <p class="error-message">{{ $message }}</p>
             @enderror
