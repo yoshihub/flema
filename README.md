@@ -96,6 +96,14 @@ git clone git@github.com:yoshihub/flema.git
 -   phpMyAdmin：http://localhost:8080/
 
 ## 認証済みユーザーアカウント
+- CO01~CO05の商品紐づけユーザー
+- メールアドレス seller1@example.com
+- パスワード    password
 
-- メールアドレス aaa@aaa.com
-- パスワード    hogehoge1
+- CO06~CO10の商品紐づけユーザー
+- メールアドレス seller2@example.com
+- パスワード    password
+  
+- 紐づけなしユーザー
+- メールアドレス standalone@example.com
+- パスワード    password
