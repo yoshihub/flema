@@ -138,6 +138,32 @@
                 </div>
             </form>
         </div>
+
+        <!-- 取引完了モーダル -->
+        <div id="review-modal" class="modal-overlay" style="display: none;">
+            <div class="modal-card">
+                <div class="modal-header">取引が完了しました。</div>
+                <div class="modal-body">
+                    <div class="modal-sub">今回の取引相手はいかがでしたか？</div>
+                    <form id="review-form" action="{{ route('purchase.rate', $purchase) }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="rating" id="rating-input" value="">
+                        <div class="star-group" aria-label="rating">
+                            <button type="button" class="star" data-value="1">★</button>
+                            <button type="button" class="star" data-value="2">★</button>
+                            <button type="button" class="star" data-value="3">★</button>
+                            <button type="button" class="star" data-value="4">★</button>
+                            <button type="button" class="star" data-value="5">★</button>
+                        </div>
+                        <div class="modal-actions">
+                            <button id="submit-rating" type="submit" class="modal-submit" disabled>送信する</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- モーダル表示設定（BladeをJSに直接埋め込まない） -->
+        <div id="review-config" data-should-show="{{ isset($shouldShowReviewModal) && $shouldShowReviewModal ? '1' : '0' }}" style="display:none;"></div>
     </div>
 </div>
 @endsection
@@ -176,5 +202,43 @@
             });
         }
     });
+
+    // 評価モーダル表示制御
+    (function() {
+        var cfg = document.getElementById('review-config');
+        var shouldShow = cfg && cfg.dataset && cfg.dataset.shouldShow === '1';
+        var overlay = document.getElementById('review-modal');
+        if (!overlay) return;
+        if (shouldShow) {
+            overlay.style.display = 'flex';
+        }
+
+        var stars = overlay.querySelectorAll('.star');
+        var input = document.getElementById('rating-input');
+        var submit = document.getElementById('submit-rating');
+        var current = 0;
+
+        function render(val) {
+            stars.forEach(function(el, i) {
+                var idx = i + 1;
+                el.classList.toggle('active', idx <= val);
+            });
+            submit.disabled = val === 0;
+        }
+
+        stars.forEach(function(el) {
+            el.addEventListener('click', function() {
+                current = parseInt(el.getAttribute('data-value'));
+                input.value = current;
+                render(current);
+            });
+            el.addEventListener('mouseenter', function() {
+                render(parseInt(el.getAttribute('data-value')));
+            });
+        });
+        overlay.addEventListener('mouseleave', function() {
+            render(current);
+        });
+    })();
 </script>
 @endsection

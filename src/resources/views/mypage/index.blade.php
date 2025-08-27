@@ -14,6 +14,13 @@
 
     <div class="user-info">
         <p>{{ Auth::user()->name }}</p>
+        @if(isset($reviewCount) && $reviewCount > 0 && isset($averageRatingRounded))
+        <div class="rating-stars" aria-label="平均評価 {{ $averageRatingRounded }} / 5">
+            @for($i = 1; $i <= 5; $i++)
+                <span class="star {{ $i <= $averageRatingRounded ? 'on' : '' }}">★</span>
+                @endfor
+        </div>
+        @endif
     </div>
 
     <a href="/mypage/profile" class="edit-button">プロフィールを編集</a>

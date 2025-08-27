@@ -394,3 +394,41 @@
         max-width: 85%;
     }
 }
+
+/* --- 評価モーダル --- */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-card {
+    width: 520px;
+    max-width: 90vw;
+    background: #fffbea;
+    border: 1px solid #f1e7b6;
+    border-radius: 12px;
+    box-shadow: 0 10px 24px rgba(0,0,0,.2);
+    overflow: hidden;
+}
+
+.modal-header {
+    background: #fff3c4;
+    padding: 14px 18px;
+    font-weight: 700;
+}
+
+.modal-body { padding: 18px; }
+.modal-sub { color: #666; font-size: 12px; margin-bottom: 12px; }
+
+.star-group { display: flex; gap: 12px; font-size: 36px; color: #ddd; margin: 12px 0 8px; }
+.star { background: none; border: none; cursor: pointer; color: inherit; padding: 0; line-height: 1; }
+.star.active { color: #f6c000; }
+
+.modal-actions { display: flex; justify-content: flex-end; margin-top: 8px; }
+.modal-submit { background: #ff6b6b; color: #fff; border: none; border-radius: 6px; padding: 8px 16px; cursor: pointer; }
+.modal-submit:disabled { opacity: .5; cursor: not-allowed; }

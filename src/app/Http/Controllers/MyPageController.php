@@ -7,6 +7,7 @@ use App\Http\Requests\ProfileRequest;
 use App\Models\Exhibition;
 use App\Models\Message;
 use App\Models\Purchase;
+use App\Models\Review;
 use App\Models\UserAddress;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Container\Container;
@@ -17,8 +18,17 @@ class MyPageController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
+        /** @var \App\Models\User $user */
 
         $tab = $request->query('tab');
+
+        // プロフィール表示用: 受け取ったレビューの平均（四捨五入）と件数
+        $reviewCount = Review::where('reviewee_id', $user->id)->count();
+        $averageRatingRounded = null;
+        if ($reviewCount > 0) {
+            $avg = Review::where('reviewee_id', $user->id)->avg('rating');
+            $averageRatingRounded = (int) round($avg);
+        }
 
         // 未読件数系は常に初期化しておく（他タブでも compact で渡すため）
         $unreadCounts = [];
@@ -35,9 +45,20 @@ class MyPageController extends Controller
             $exhibitions = Exhibition::where('user_id', '=', Auth::id())->get();
             $purchases = collect();
         } elseif ($tab === 'trade') {
-            // 自分が購入者または出品者で、かつ取引が未完了のものを、最新メッセージ順にソート
+            // 自分が購入者または出品者で、
+            // 1) 未完了 もしくは 2) 完了済みかつ自分が未評価 の取引を最新メッセージ順にソート
             $exhibitions = collect();
-            $purchases = Purchase::where('is_completed', false)
+            $purchases = Purchase::where(function ($q) use ($user) {
+                // 未完了の取引
+                $q->where('is_completed', false)
+                    // または完了済みだが自分が未評価
+                    ->orWhere(function ($qq) use ($user) {
+                        $qq->where('is_completed', true)
+                            ->whereDoesntHave('reviews', function ($r) use ($user) {
+                                $r->where('reviewer_id', $user->id);
+                            });
+                    });
+            })
                 ->where(function ($q) use ($user) {
                     // 購入者として
                     $q->where('user_id', $user->id)
@@ -50,7 +71,8 @@ class MyPageController extends Controller
                     'exhibition',
                     'messageReads' => function ($q) use ($user) {
                         $q->where('user_id', $user->id);
-                    }
+                    },
+                    'reviews'
                 ])
                 ->orderByDesc(
                     Message::select('created_at')
@@ -81,7 +103,7 @@ class MyPageController extends Controller
             $totalUnread = 0;
         }
 
-        return view('mypage.index', compact('exhibitions', 'purchases', 'unreadCounts', 'totalUnread'));
+        return view('mypage.index', compact('exhibitions', 'purchases', 'unreadCounts', 'totalUnread', 'reviewCount', 'averageRatingRounded'));
     }
 
     public function profile()
@@ -105,6 +127,7 @@ class MyPageController extends Controller
         $addressRequest->validateResolved();
 
         $user = Auth::user();
+        /** @var \App\Models\User $user */
         $user->name = $request->name;
 
         if ($request->hasFile('profile_image')) {

@@ -19,6 +19,20 @@
     font-size:24px;
 }
 
+.rating-stars {
+    margin-top: 6px;
+}
+
+.rating-stars .star {
+    font-size: 18px;
+    color: #C9C9C9; /* グレーの星（オフ） */
+    letter-spacing: 2px;
+}
+
+.rating-stars .star.on {
+    color: #F7C948; /* 黄色の星（オン） */
+}
+
 .edit-button {
     margin-left: auto;
     padding: 4px 10px;

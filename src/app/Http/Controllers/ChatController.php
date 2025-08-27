@@ -39,8 +39,16 @@ class ChatController extends Controller
             ? $purchase->exhibition->user  // 購入者の場合は出品者
             : $purchase->buyer;            // 出品者の場合は購入者
 
-        // サイドバー用：自分が関係者かつ未完了の他の取引（最新メッセージ順）
-        $otherPurchases = Purchase::where('is_completed', false)
+        // サイドバー用：自分が関係者かつ、未完了 または 完了済み未評価の他の取引（最新メッセージ順）
+        $otherPurchases = Purchase::where(function ($q) use ($user) {
+            $q->where('is_completed', false)
+                ->orWhere(function ($qq) use ($user) {
+                    $qq->where('is_completed', true)
+                        ->whereDoesntHave('reviews', function ($r) use ($user) {
+                            $r->where('reviewer_id', $user->id);
+                        });
+                });
+        })
             ->where('id', '!=', $purchase->id)
             ->where(function ($q) use ($user) {
                 $q->where('user_id', $user->id)
@@ -48,7 +56,7 @@ class ChatController extends Controller
                         $qq->where('user_id', $user->id);
                     });
             })
-            ->with('exhibition')
+            ->with(['exhibition', 'reviews'])
             ->orderByDesc(
                 Message::select('created_at')
                     ->whereColumn('messages.purchase_id', 'purchases.id')
@@ -57,7 +65,22 @@ class ChatController extends Controller
             )
             ->get();
 
-        return view('chat.show', compact('purchase', 'messages', 'otherUser', 'otherPurchases'));
+        // レビュー表示判定
+        $hasReviewed = $purchase->reviews()->where('reviewer_id', $user->id)->exists();
+        $isBuyer = $purchase->user_id === $user->id;
+        $isSeller = $purchase->exhibition->user_id === $user->id;
+
+        $shouldShowReviewModal = false;
+        if ($purchase->is_completed && !$hasReviewed) {
+            if ($isSeller) {
+                $shouldShowReviewModal = true; // 出品者は完了後に開いたら表示
+            }
+            if ($isBuyer && session('show_review_modal')) {
+                $shouldShowReviewModal = true; // 購入者は完了直後に表示
+            }
+        }
+
+        return view('chat.show', compact('purchase', 'messages', 'otherUser', 'otherPurchases', 'shouldShowReviewModal'));
     }
 
     public function store(StoreMessageRequest $request, Purchase $purchase)
