@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddressRequest;
 use App\Http\Requests\PurchaseRequest;
+use App\Mail\PurchaseCompleted;
 use App\Models\Exhibition;
 use App\Models\Purchase;
 use App\Models\Review;
 use App\Models\UserAddress;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class PurchaseController extends Controller
 {
@@ -85,6 +88,17 @@ class PurchaseController extends Controller
         $purchase->is_completed = true;
         $purchase->completed_at = now();
         $purchase->save();
+
+        // 出品者へ通知メール送信（Mailtrap経由）
+        try {
+            $seller = $purchase->exhibition->user;
+            if ($seller && $seller->email) {
+                Mail::to($seller->email)->send(new PurchaseCompleted($purchase));
+            }
+        } catch (\Throwable $e) {
+            // 失敗してもユーザー操作は継続させる（ログのみ）
+            Log::error('Failed to send purchase completed mail: ' . $e->getMessage());
+        }
 
         return redirect()->route('purchase.chat', $purchase)
             ->with('message', '取引を完了しました。')
