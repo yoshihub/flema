@@ -89,7 +89,7 @@ git clone git@github.com:yoshihub/flema.git
 
 ## ER 図
 
-<img src="er.drawio.png" style="background-color: white;" alt="ER図">
+<img src="err.drawio.png" style="background-color: white;" alt="ER図">
 
 ## アクセス URL
 
