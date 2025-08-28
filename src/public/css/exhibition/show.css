@@ -228,6 +228,10 @@
     color:red;
 }
 
+.sold{
+    background-color: #999;
+}
+
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
     .product-main {

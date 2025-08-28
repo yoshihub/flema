@@ -37,7 +37,8 @@ class PurchaseController extends Controller
         $exhibition->is_sold = true;
         $exhibition->save();
 
-        return back()->with('message', '購入しました');
+        return redirect()->route('exhibition.show', $request->exhibition_id)
+            ->with('message', '購入しました');
     }
 
     public function purchaseAddress($id)

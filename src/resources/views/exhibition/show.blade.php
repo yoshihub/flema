@@ -63,7 +63,9 @@
                 </div>
             </div>
 
-            @if(Auth::check())
+            @if($exhibition->is_sold)
+            <div class="purchase-btn sold">売り切れ</div>
+            @elseif(Auth::check())
             <a href="{{ route('purchase.index', $exhibition->id) }}" class="purchase-btn">購入手続きへ</a>
             @endif
 
