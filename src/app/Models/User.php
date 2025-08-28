@@ -65,10 +65,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Purchase::class, 'user_id');
     }
 
-    // 自分が出品した商品（Exhibition 側の user_id は seller）
+    // いいねした商品（中間テーブル: exhibition_user）
     public function exhibitions()
     {
-        return $this->hasMany(Exhibition::class, 'user_id');
+        return $this->belongsToMany(Exhibition::class, 'exhibition_user');
     }
 
     // 自分が与えたレビュー（reviewer_id = 自分）
