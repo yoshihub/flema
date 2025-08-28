@@ -1,14 +1,10 @@
 <?php
 
 use App\Http\Controllers\ChatController;
-use App\Http\Controllers\ChatMessageController;
 use App\Http\Controllers\ExhibitionController;
 use App\Http\Controllers\FavoriteController;
-use App\Http\Controllers\MessageReadController;
 use App\Http\Controllers\MyPageController;
-use App\Http\Controllers\PurchaseCompleteController;
 use App\Http\Controllers\PurchaseController;
-use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SellController;
 use Illuminate\Support\Facades\Route;
 

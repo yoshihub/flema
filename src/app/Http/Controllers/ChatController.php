@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Purchase;
 use App\Models\Message;
 use App\Models\MessageRead;
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreMessageRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
