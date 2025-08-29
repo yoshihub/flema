@@ -103,10 +103,6 @@ git clone git@github.com:yoshihub/flema.git
 | email                     | varchar(255)    |             |     ◯      |    ◯     |             |
 | email_verified_at         | timestamp       |             |            |          |             |
 | password                  | varchar(255)    |             |            |    ◯     |             |
-| remember_token            | varchar(100)    |             |            |          |             |
-| two_factor_secret         | text            |             |            |          |             |
-| two_factor_recovery_codes | text            |             |            |          |             |
-| two_factor_confirmed_at   | timestamp       |             |            |          |             |
 | created_at                | timestamp       |             |            |          |             |
 | updated_at                | timestamp       |             |            |          |             |
 
