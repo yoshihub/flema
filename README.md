@@ -171,6 +171,7 @@ git clone git@github.com:yoshihub/flema.git
 | exhibition_id | bigint unsigned |             |          ◯              |    ◯     | exhibitions(id) |
 | created_at    | timestamp       |             |                       |          |                 |
 | updated_at    | timestamp       |             |                       |          |                 |
+| UNIQUE      |                  |  | user_id,exhibition_id           |          |               |
 
 ### comments テーブル
 
