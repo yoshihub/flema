@@ -4,15 +4,20 @@
 
 ### Docker ビルド
 
+1. フリマアプリプロジェクトをクローン
 ```bash
 git clone git@github.com:yoshihub/flema.git
 ```
+2. フリマアプリプロジェクトのディレクトリに移動
+```bash
+cd flema
+```
 
-1. DockerDesktop アプリを立ち上げる
-2. 以下のコマンドを実行して Docker をビルド
-   ```bash
-   docker-compose up -d --build
-   ```
+3. DockerDesktop アプリを立ち上げる
+4. 以下のコマンドを実行して Docker をビルド
+    ```bash
+    docker-compose up -d --build
+    ```
 
 ### Laravel 環境構築
 
