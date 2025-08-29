@@ -167,11 +167,11 @@ git clone git@github.com:yoshihub/flema.git
 | カラム名      | 型              | PRIMARY KEY |      UNIQUE KEY       | NOT NULL | FOREIGN KEY     |
 | ------------- | --------------- | :---------: | :-------------------: | :------: | :-------------- |
 | id            | bigint unsigned |      ◯      |                       |    ◯     |                 |
-| user_id       | bigint unsigned |             |          ◯               |    ◯     | users(id)       |
-| exhibition_id | bigint unsigned |             |          ◯              |    ◯     | exhibitions(id) |
+| user_id       | bigint unsigned |             |                         |    ◯     | users(id)       |
+| exhibition_id | bigint unsigned |             |                       |    ◯     | exhibitions(id) |
 | created_at    | timestamp       |             |                       |          |                 |
 | updated_at    | timestamp       |             |                       |          |                 |
-| UNIQUE      |                  |  | user_id,exhibition_id           |          |               |
+| UNIQUE      |                  |　user_id,exhibition_id   |           |          |               |
 
 ### comments テーブル
 
